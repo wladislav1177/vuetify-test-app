@@ -18,33 +18,32 @@
       <v-list-item prepend-icon="mdi-logout" title="LogOut" value="logOut" @click="logOut"></v-list-item>
     </v-list>
     <v-list density="compact" nav v-else>
-      <v-list-item prepend-icon="mdi-logout" title="LogIn" value="logIn" @click="logIn"></v-list-item>
+      <v-list-item prepend-icon="mdi-logout" title="LogIn" value="logIn">
+        <router-link to="/auth" />
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script>
-// import { getCookie } from '@/scripts/functionsCookie'
+import { getCookie } from '@/scripts/functionsCookie'
 
 export default {
-  // data () {
-  //   return {
-  //     isLoggedIn: this.isLoggedIn,
-  //     currentUser: this.currentUser
-  //   }
-  // },
   setup () {
+    const isLoggedInCookie = getCookie('isLoggedIn');
+    let isLoggedIn = false
+    if (isLoggedInCookie === 'true') {
+       isLoggedIn = true
+    }
 
-    // let isLoggedIn = getCookie('isLoggedIn')
-    let isLoggedIn = true
     let currentUser = {}
-
     const userGuest = {
       name: 'Гость',
       avatar: 'https://randomuser.me/api/portraits/men/97.jpg',
       loggedStatus: 'Logged out'
     }
 
+    //todo: запрос на получение информации о пользователе на back-end
     if (isLoggedIn) {
       currentUser =  {
         name: 'Владислав',
@@ -62,9 +61,6 @@ export default {
     logOut () {
       this.isLoggedIn = false
       this.currentUser = this.userGuest
-    },
-    logIn () {
-      this.isLoggedIn = true
     }
   }
 }

@@ -17,15 +17,33 @@
 </template>
 
 <script>
-// import { getCookie } from '@/scripts/getCookie'
+import { getCookie, setCookie } from '@/scripts/functionsCookie'
 
 export default {
+  setup () {
+    const isLoggedIn = getCookie('isLoggedIn');
+    if (isLoggedIn === 'true') {
+      window.location.replace('/')
+    }
+  },
   methods: {
     authorization () {
       const { login, password } = this
 
-      console.log(login)
-      console.log(password)
+      //todo: отправлять запрос на back-end
+
+      const user = {
+        login: 'vladislav',
+        password: '123'
+      }
+
+      if (login === user.login && password === user.password) {
+        setCookie('isLoggedIn', 'true', {'max-age': '2592000'})
+         this.$router.push('/')
+      }
+      else {
+        console.log('error')
+      }
     }
   }
 }
